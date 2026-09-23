@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # Backend Laravel
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cernosphere_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=cernosphere
+      - DB_USERNAME=cern_user
+      - DB_PASSWORD=cern_password
+    depends_on:
+      - db
+
+  # Frontend React / Vite
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cernosphere_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  # Microservice IA (Python / FastAPI)
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: cernosphere_ai_service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./ai-service:/app
+
+  # Base de données PostgreSQL / MySQL
+  db:
+    image: postgres:16-alpine
+    container_name: cernosphere_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cernosphere
+      POSTGRES_USER: cern_user
+      POSTGRES_PASSWORD: cern_password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
