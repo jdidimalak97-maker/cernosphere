@@ -1,0 +1,25 @@
+# Systèmes d'exploitation
+.DS_Store
+Thumbs.db
+
+# Fichiers d'environnement & Secrets
+.env
+.env.*
+!.env.example
+
+# Éditeurs / IDE
+.vscode/
+.idea/
+
+# Dépendances
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Build & Logs
+dist/
+build/
+*.log
